@@ -137,6 +137,22 @@ namespace AgGateway.ADAPT.ISOv4Plugin.ISOModels
             }
             ProcessExternalNodes(taskDataNode, "FRM", baseFolder, taskData, ISOFarm.ReadXML);
 
+            // GPN
+            XmlNodeList gpnNodes = taskDataNode.SelectNodes("GPN");
+            if (gpnNodes != null)
+            {
+                taskData.ChildElements.AddRange(ISOGuidancePattern.ReadXML(gpnNodes));
+            }
+            //ProcessExternalNodes(taskDataNode, "GPN", baseFolder, taskData, ISOGuidancePattern.ReadXML);
+
+            // GGP
+            XmlNodeList ggpNodes = taskDataNode.SelectNodes("GGP");
+            if (ggpNodes != null)
+            {
+                taskData.ChildElements.AddRange(ISOGuidanceGroup.ReadXML(ggpNodes));
+            }
+            //ProcessExternalNodes(taskDataNode, "GGP", baseFolder, taskData, ISOGuidanceGroup.ReadXML);
+            
             //Operation Techniques
             XmlNodeList otqNodes = taskDataNode.SelectNodes("OTQ");
             if (otqNodes != null)

@@ -192,6 +192,20 @@ namespace AgGateway.ADAPT.ISOv4Plugin.Mappers
                 }
             }
 
+            if (adm.Catalog.GuidanceGroups != null)
+            {
+                GuidanceGroupMapper guidancegroupmapper = new GuidanceGroupMapper(this);
+                IEnumerable<ISOGuidanceGroup> guidancegroups = guidancegroupmapper.ExportGuidanceGroups (adm.Catalog.GuidanceGroups);
+                ISOTaskData.ChildElements.AddRange(guidancegroups);
+            }
+
+            if (adm.Catalog.GuidancePatterns != null)
+            {
+                GuidancePatternMapper guidancepatternmapper = new GuidancePatternMapper(this);
+                IEnumerable<ISOGuidancePattern> guidancepatterns = guidancepatternmapper.ExportGuidancePatterns(adm.Catalog.GuidancePatterns);
+                ISOTaskData.ChildElements.AddRange(guidancepatterns);
+            }
+
             //Workers
             if (adm.Catalog.Persons != null)
             {
@@ -309,6 +323,21 @@ namespace AgGateway.ADAPT.ISOv4Plugin.Mappers
                 PartfieldMapper partFieldMapper = new PartfieldMapper(this);
                 AdaptDataModel.Catalog.Fields.AddRange(partFieldMapper.ImportFields(partFields));
                 AdaptDataModel.Catalog.CropZones.AddRange(partFieldMapper.ImportCropZones(partFields));
+            }
+
+            IEnumerable<ISOGuidanceGroup> guidancegroups = taskData.ChildElements.OfType<ISOGuidanceGroup>();
+            if (guidancegroups.Any())
+            {
+                GuidanceGroupMapper guidancegroupmapper = new GuidanceGroupMapper(this);
+                AdaptDataModel.Catalog.GuidanceGroups.AddRange(guidancegroupmapper.ImportGuidanceGroups(guidancegroups));
+
+            }
+
+            IEnumerable<ISOGuidancePattern> isoguidancepatterns = taskData.ChildElements.OfType<ISOGuidancePattern>();
+            if (isoguidancepatterns.Any())
+            {
+                GuidancePatternMapper guidancepatternmapper = new GuidancePatternMapper(this);
+                AdaptDataModel.Catalog.GuidancePatterns.AddRange(guidancepatternmapper.ImportGuidancePatterns(isoguidancepatterns));
             }
 
             //Devices
